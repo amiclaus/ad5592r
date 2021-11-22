@@ -16,33 +16,18 @@
 	};
 
 	fragment@1 {
-		target-path = "/";
-		__overlay__ {
-			vref: fixedregulator@0 {
-				compatible = "regulator-fixed";
-				regulator-name = "vref";
-				regulator-min-microvolt = <3300000>;
-				regulator-max-microvolt = <3300000>;
-				regulator-always-on;
-			};
-		};
-	};
-
-	fragment@2 {
 		target = <&spi0>;
 		__overlay__ {
 			#size-cells = <0>;
 			#address-cells = <1>;
 			status = "okay";
 
-			ad5592r@0 {
+			ad5592r: ad5592r@0 {
 				compatible = "adi,ad5592r";
 				reg = <0>;
 
 				spi-max-frequency = <1000000>;
 				spi-cpol;
-
-				vref-supply = <&vref>;
 
 				channel@0 {
 					reg = <0>;
@@ -83,5 +68,8 @@
 				};
 			};
 		};
+	};
+	__overrides__ {
+		cs_pin = <&ad5592r>,"reg:0";
 	};
 };
